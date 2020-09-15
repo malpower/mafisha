@@ -1,5 +1,6 @@
 const handlers=new Map;
 const fs=require("fs");
+const path=require("path");
 
 const header=`
 <head>
@@ -28,7 +29,7 @@ handlers.set("GET", async (req, res, target, tmpfile)=>
             list=list.map(v=>
             {
                 let s=fs.statSync(`${target}/${v}`);
-                return `<tr><td>${s.mtime.toLocaleString()}</td><td>${s.size}</td><td><a href=".${req.url}${(req.url==="/"?"":"/")}${v}">${v}${s.isDirectory()?"/":""}</a></td></tr>`;
+                return `<tr><td>${s.mtime.toLocaleString()}</td><td>${s.size}</td><td><a href="${path.resolve(req.url, v)}">${v}${s.isDirectory()?"/":""}</a></td></tr>`;
             });
             res.setHeader("Content-Type","text/html");
             res.end(`<html>${header}<body><table><thead><tr><th>Created At</th><th>Size</th><th>File</th></tr></thead><tbody>${list.join("\n")}</tbody></table></body></html>`);
@@ -53,14 +54,30 @@ handlers.set("GET", async (req, res, target, tmpfile)=>
     return;
 }).set("POST", async (req, res, target, tmpfile)=>
 {
+    try
+    {
+        fs.copyFileSync(tmpfile, target);
+        console.log(req.url, "created", (new Date).toLocaleString(), req.socket.remoteAddress);
+    }
+    catch (e)
+    {
+        res.statusCode=400;
+        return res.end("No such file.");
+    }
     res.end("OK");
-    fs.copyFileSync(tmpfile, target);
-    console.log(req.url, "created", (new Date).toLocaleString(), req.socket.remoteAddress);
 }).set("DELETE", async (req, res, target)=>
 {
+    try
+    {
+        fs.unlinkSync(target);
+        console.log(req.url, "deleted", (new Date).toLocaleString(), req.socket.remoteAddress);
+    }
+    catch (e)
+    {
+        res.statusCode=400;
+        return res.end("No such file.");
+    }
     res.end("OK");
-    fs.unlinkSync(target);
-    console.log(req.url, "deleted", (new Date).toLocaleString(), req.socket.remoteAddress);
 });
 
 

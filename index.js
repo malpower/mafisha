@@ -17,7 +17,7 @@ console.log(`Working in ${cwd}`);
 http.createServer((req, res)=>
 {
     let tmpfile=null;
-    req.url=req.url.replace(/\.\./g, "").replace(/\/\//, "");
+    let url=req.url.replace(/\.\./g, "").replace(/\/\//, "");
     if ((args["-a"] || "").includes(":"))
     {
         let auth=req.headers["authorization"];
@@ -39,7 +39,7 @@ http.createServer((req, res)=>
         fs.appendFileSync(tmpfile, chunk);
     }).on("end", async ()=>
     {
-        let target=path.resolve(cwd, req.url.substring(1));
+        let target=path.resolve(cwd, url.substring(1));
         console.log(">>", target);
         
         let f=handlers.get(req.method.toUpperCase());
