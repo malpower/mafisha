@@ -35,7 +35,14 @@ handlers.set("GET", async (req, res, target, tmpfile)=>
             return;
         }
         res.setHeader("Content-Type", "application/octet-stream");
-        res.end(fs.readFileSync(target));
+        let rs=fs.createReadStream(target)
+        rs.on("data", (chunk)=>
+        {
+            res.write(chunk);
+        }).on("end", ()=>
+        {
+            res.end();
+        });
     }
     catch (e)
     {
