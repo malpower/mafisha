@@ -29,7 +29,8 @@ handlers.set("GET", async (req, res, target, tmpfile)=>
             list=list.map(v=>
             {
                 let s=fs.statSync(`${target}/${v}`);
-                return `<tr><td>${s.mtime.toLocaleString()}</td><td>${s.size}</td><td><a href="${path.resolve(req.url, v)}">${v}${s.isDirectory()?"/":""}</a></td></tr>`;
+                let u=`${req.url}/${v}`.replace(/\/{1,}/g, "/");
+                return `<tr><td>${s.mtime.toLocaleString()}</td><td>${s.size}</td><td><a href="${u}">${v}${s.isDirectory()?"/":""}</a></td></tr>`;
             });
             res.setHeader("Content-Type","text/html");
             res.end(`<html>${header}<body><table><thead><tr><th>Created At</th><th>Size</th><th>File</th></tr></thead><tbody>${list.join("\n")}</tbody></table></body></html>`);

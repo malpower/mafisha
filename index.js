@@ -13,7 +13,6 @@ if (!path.isAbsolute(cwd))
 {
     cwd=`${process.cwd()}/${cwd}`;
 }
-console.log(args);
 if (typeof(args["--help"])==="string")
 {
     console.log(`mafisha [option]...
@@ -28,6 +27,7 @@ http.createServer((req, res)=>
 {
     let tmpfile=null;
     let url=req.url.replace(/\.\./g, "").replace(/\/\//, "");
+    url=decodeURIComponent(url);
     if ((args["-a"] || "").includes(":"))
     {
         let auth=req.headers["authorization"];
