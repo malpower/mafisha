@@ -1,0 +1,22 @@
+{
+  "name": "mafisha",
+  "version": "0.0.1",
+  "description": "an http file sharer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/malpower/mafisha.git"
+  },
+  "bin": {
+    "mafisha": "command.js"
+  },
+  "author": "malpower",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/malpower/mafisha/issues"
+  },
+  "homepage": "https://github.com/malpower/mafisha#readme"
+}
