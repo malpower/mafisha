@@ -6,7 +6,7 @@ function parseArguments(argv)
         let arg=argv[i];
         if (arg.indexOf("-")===0)
         {
-            args[arg]=argv[i+1];
+            args[arg]=argv[i+1] || arg;
         }
     }
     return args;

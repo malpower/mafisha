@@ -13,6 +13,16 @@ if (!path.isAbsolute(cwd))
 {
     cwd=`${process.cwd()}/${cwd}`;
 }
+console.log(args);
+if (typeof(args["--help"])==="string")
+{
+    console.log(`mafisha [option]...
+    -a <username>:<password>\t enable basic authentication.
+    -d <path>\t work in specified directory.
+    --help\t print this help text.
+    -p <port>\t work on specified port.`);
+    process.exit(0);
+}
 console.log(`Working in ${cwd}`);
 http.createServer((req, res)=>
 {
