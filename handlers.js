@@ -37,6 +37,7 @@ handlers.set("GET", async (req, res, target, tmpfile)=>
             return;
         }
         res.setHeader("Content-Type", "application/octet-stream");
+        res.setHeader("Content-Length", `${s.size}`);
         let rs=fs.createReadStream(target)
         rs.on("data", (chunk)=>
         {
